@@ -1,0 +1,39 @@
+name: Ionic iOS Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install Ionic CLI
+      run: npm install -g @ionic/cli
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Ionic iOS
+      run: ionic build ios
+
+    - name: Archive iOS Build
+      run: |
+        mkdir -p $HOME/build_output
+        tar czf $HOME/build_output/ios-build-artifact.tar.gz platforms/ios/build/emulator/*.app
+
+    - name: Upload iOS Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ios-build-artifact
+        path: $HOME/build_output
