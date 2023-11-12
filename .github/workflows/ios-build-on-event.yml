@@ -28,7 +28,7 @@ jobs:
     - name: Archive iOS Build
       run: |
         mkdir -p $HOME/build_output
-        tar czf $HOME/build_output/ios-build-artifact.tar.gz platforms/ios/build/emulator/*.app
+        tar czf $HOME/build_output/ios-build-artifact.tar.gz ios/build/emulator/*.app
 
     - name: Upload iOS Build Artifact
       uses: actions/upload-artifact@v2
