@@ -25,7 +25,7 @@ jobs:
     - name: Build Ionic iOS
       run: ionic build ios
 
-    - name: Archive iOS Build
+    - name: Archive ios Build
       run: |
         mkdir -p $HOME/build_output
         tar czf $HOME/build_output/ios-build-artifact.tar.gz ios/build/emulator/*.app
