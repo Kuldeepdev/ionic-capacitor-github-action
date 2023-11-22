@@ -1,37 +1,57 @@
-name: Ionic iOS Build
+name: Ionic Capacitor iOS Build
 
 on:
   push:
     branches:
-      - main
+      - main # Modify this to match your main branch name
 
 jobs:
   build:
     runs-on: macos-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install Node.js
-      uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' # Use the Node.js version required by your Ionic project
 
-    - name: Install Ionic CLI
-      run: npm install -g @ionic/cli
+      - name: Install dependencies
+        run: |
+          npm install -g @ionic/cli
+          npm install
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Build Ionic app
+        run: ionic build
 
-    - name: Build Ionic iOS
-      run: ionic build ios
+      - name: Install Capacitor
+        run: npx cap update
 
-    - name: Archive ios Build
-      run: |
-        mkdir -p $HOME/build_output
-        tar czf $HOME/build_output/ios-build-artifact.tar.gz ios/build/emulator/*.app
+      - name: Build Capacitor for iOS
+        run: npx cap sync ios
 
-    - name: Upload iOS Build Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: ios-build-artifact
-        path: $HOME/build_output
+      - name: Build and run in Simulator
+        run: |
+          npx cap open ios
+          xcodebuild -workspace App.xcworkspace -scheme App -destination 'platform=iOS Simulator,name=iPhone 12' build
+
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ios-build-artifact
+          path: ./ios/App.xcarchive # Adjust the path to the generated .xcarchive file
+
+      # Additional steps to export .ipa file if needed
+      # - name: Export .ipa file
+      #   run: |
+      #     xcodebuild -exportArchive -archivePath ./ios/App.xcarchive -exportOptionsPlist exportOptions.plist -exportPath ./ios-build
+
+      # - name: Archive .ipa file
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ios-ipa-artifact
+      #     path: ./ios-build/*.ipa # Adjust the path to the exported .ipa file
+
+      # Add further steps as needed for your specific deployment or testing workflow
