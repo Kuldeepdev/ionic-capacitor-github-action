@@ -21,11 +21,11 @@ jobs:
           npm install -g @ionic/cli
           npm install
 
-      - name: Build Ionic app
-        run: ionic build
+      - name: Build Ionic assets
+        run: ionic build --prod
 
-      - name: Install Capacitor
-        run: npx cap update
+      - name: Copy generated assets from Ionic to Capacitor iOS platform
+        run: npx cap copy ios && npx cap update ios
 
       - name: Build Capacitor for iOS
         run: npx cap sync ios
