@@ -33,6 +33,9 @@ jobs:
       - name: Make ./gradlew command executable
         run: cd android && chmod +x ./gradlew && cd ..
 
+      - name: Config project
+        run: npm run config-prod
+         
       - name: Build Ionic assets
         run: ionic build --prod
 
