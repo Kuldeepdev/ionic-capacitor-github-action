@@ -1,4 +1,4 @@
-name: Generate Android Development APK
+name: Android APK
 
 on: 
     push:
@@ -25,7 +25,7 @@ on:
             required: true
 
 jobs:
-  prepare_tools:
+  android_build:
     name: Prepare tools to generate the APK
     runs-on: ubuntu-latest
     steps:
