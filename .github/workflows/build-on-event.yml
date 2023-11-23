@@ -26,7 +26,7 @@ on:
 
 jobs:
   android_build:
-    name: Prepare tools to generate the APK
+    name: Android Build
     runs-on: ubuntu-latest
     steps:
       - name: Get code from the current repository
@@ -63,6 +63,9 @@ jobs:
 
       - name: Copy generated assets from Ionic to Capacitor Android platform
         run: npx cap copy android && npx cap update android
+
+      - name: Capacitor build
+        run: npx cap build android
 
       - name: Generate APK
         run: cd android && ./gradlew assembleDebug && cd ..
