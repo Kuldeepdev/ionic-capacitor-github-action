@@ -1,27 +1,28 @@
 name: Generate Android Development APK
 
-on: [push, pull_request]
-
-workflow_dispatch:
-    inputs:
-      environment:
-        description: "Environment to build"
-        default: "dev"
-        type: choice
-        options:
-          - dev
-          - qa
-          - staging
-          - prod
-        required: true
-      build-type:
-        description: "Type of Mobile Build"
-        default: "debug"
-        type: choice
-        options:
-          - debug
-          - release
-        required: true
+on: 
+    push:
+        
+    workflow_dispatch:
+        inputs:
+          environment:
+            description: "Environment to build"
+            default: "dev"
+            type: choice
+            options:
+              - dev
+              - qa
+              - staging
+              - prod
+            required: true
+          build-type:
+            description: "Type of Mobile Build"
+            default: "debug"
+            type: choice
+            options:
+              - debug
+              - release
+            required: true
 
 jobs:
   prepare_tools:
